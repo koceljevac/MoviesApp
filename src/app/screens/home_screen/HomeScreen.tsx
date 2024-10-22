@@ -1,38 +1,93 @@
-// screens/HomeScreen.tsx
+import React from "react";
+import { View, Text, StyleSheet, ScrollView, SafeAreaView } from "react-native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../../navigation/StackNavigator";
+import { useTopRatedMovies } from "../../../features/movies/hooks/useTopRatedMovies";
+import MoviesSection from "../search_screen/section/PopularMoviesSection";
+import { usePopularActors } from "../../../features/actors/hooks/usePopularActors";
+import ActorCircleFeed from "../../../features/actors/components/ActorCircleFeed";
 
-import React, { useState } from 'react';
-import { View, Text, Button } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigation/StackNavigator';
-import TextButton from "../../../core/components/TextButton"
-import { TextInput } from 'react-native-gesture-handler';
-
-type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Main'>;
+type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, "Main">;
 
 export const HomeScreen = () => {
-  const navigation = useNavigation<HomeScreenNavigationProp>();
-
-  const [inputText, setInputText] = useState('');
+  const {
+    movies,
+    loading: moviesLoading,
+    error: moviesError,
+  } = useTopRatedMovies();
+  const {
+    actors,
+    loading: actorsLoading,
+    error: actorsError,
+  } = usePopularActors();
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Home Screen</Text>
-      <TextInput
-      style={{
-        height:40,
-        borderColor: 'gray',
-        borderWidth:1,
-        width: 200,
-        marginBottom: 20,
-        paddingHorizontal:10
-      }}
-      placeholder='Enter text'
-      value={inputText}
-      onChangeText={setInputText}>
-      </TextInput>
-    
-      <TextButton onPress={()=>console.log(inputText)}></TextButton>
-    </View>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <ScrollView>
+          <Text style={styles.sectionTitle}>Top Actors</Text>
+
+          {actorsLoading ? (
+            <Text>Loading actors...</Text>
+          ) : actorsError ? (
+            <Text>Error loading actors: {actorsError}</Text>
+          ) : (
+            <ScrollView
+              horizontal={true} // Omogućava horizontalno skrolovanje
+              showsHorizontalScrollIndicator={false} // Skrivanje indikatora skrolovanja
+              style={styles.horizontalScrollContainer}
+            >
+              <View style={styles.actorsContainer}>
+                {actors.map((actor) => (
+                  <ActorCircleFeed
+                    key={actor.id}
+                    actorName={actor.name}
+                    actorImage={`https://image.tmdb.org/t/p/w500${actor.profile_path}`}
+                  />
+                ))}
+              </View>
+            </ScrollView>
+          )}
+
+          <MoviesSection
+            movies={movies}
+            loading={moviesLoading}
+            error={moviesError}
+            title="Top Rated Movies"
+          />
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "white", // Možeš promeniti boju pozadine
+  },
+  container: {
+    flex: 1,
+    padding: 10,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginVertical: 10,
+  },
+  horizontalScrollContainer: {
+    marginBottom: 20, // Margina ispod horizontalne sekcije
+  },
+  actorsContainer: {
+    flexDirection: "row",
+    flexWrap: "nowrap", // Sprečava prelazak u sledeći red
+  },
+});
+
+export default HomeScreen;

@@ -1,14 +1,14 @@
 // src/screens/SearchScreen.tsx
 
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { useMovies } from '../../../features/movies/hooks/useMovies';
-import SearchSection from '../search_screen/components/SearchSection'; 
-import MoviesSection from './../search_screen/components/PopularMoviesSection';
+import React, { useState } from "react";
+import { View, StyleSheet } from "react-native";
+import { usePopularMovies } from "../../../features/movies/hooks/usePopularMovies";
+import SearchSection from "./section/SearchSection";
+import MoviesSection from "./section/PopularMoviesSection";
 
 export const SearchScreen = () => {
-  const { movies, loading, error } = useMovies();
-  const [searchText, setSearchText] = useState('');
+  const { movies, loading, error } = usePopularMovies();
+  const [searchText, setSearchText] = useState("");
 
   // Filter movies based on the search text
   const filteredMovies = movies.filter((movie) =>
@@ -17,11 +17,14 @@ export const SearchScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* Pass the search text and handler */}
       <SearchSection searchText={searchText} setSearchText={setSearchText} />
 
-      {/* Pass filtered movies, loading, and error to MoviesSection */}
-      <MoviesSection movies={filteredMovies} loading={loading} error={error} />
+      <MoviesSection
+        movies={filteredMovies}
+        loading={loading}
+        error={error}
+        title="Popular Movies"
+      />
     </View>
   );
 };

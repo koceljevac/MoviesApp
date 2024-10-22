@@ -1,15 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-import { Movie } from '../../movies/types/Movie';
+import { Movie } from '../types/Movie';
 import { MovieRepository } from '../repository/MovieRepository';
 
-export const useMovies = () => {
+export const usePopularMovies = () => {
   const { 
     data: movies = [], 
     isLoading: loading, 
     isError, 
     error 
   } = useQuery<Movie[], Error>({
-    queryKey: ['movies'], 
+    queryKey: ['popularMovies'], 
     queryFn: MovieRepository.getPopularMovies,
     staleTime: 5 * 60 * 1000, 
     retry: 1, 

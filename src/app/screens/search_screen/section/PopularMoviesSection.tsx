@@ -1,17 +1,29 @@
 // src/screens/search_screen/components/PopularMoviesSection.tsx
 
-import React from 'react';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
-import MovieCard from '../../../../features/movies/components/MovieCard';
-import { Movie } from '../../../../features/movies/types/Movie';
+import React from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  ActivityIndicator,
+  StyleSheet,
+} from "react-native";
+import MovieCard from "../../../../features/movies/components/MovieCard";
+import { Movie } from "../../../../features/movies/types/Movie";
 
 type MoviesSectionProps = {
   movies: Movie[];
   loading: boolean;
   error: string | null;
+  title: string;
 };
 
-const MoviesSection = ({ movies, loading, error }: MoviesSectionProps) => {
+const MoviesSection = ({
+  movies,
+  loading,
+  error,
+  title,
+}: MoviesSectionProps) => {
   if (loading) {
     return (
       <View style={styles.loader}>
@@ -38,7 +50,7 @@ const MoviesSection = ({ movies, loading, error }: MoviesSectionProps) => {
 
   return (
     <View>
-      <Text style={styles.title}>Popular Movies</Text>
+      <Text style={styles.title}>{title}</Text>
       <FlatList
         data={movies}
         horizontal={true}
@@ -53,21 +65,21 @@ const MoviesSection = ({ movies, loading, error }: MoviesSectionProps) => {
 const styles = StyleSheet.create({
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginVertical: 10,
   },
   loader: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   errorContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   errorText: {
-    color: 'red',
+    color: "red",
     fontSize: 18,
   },
 });
