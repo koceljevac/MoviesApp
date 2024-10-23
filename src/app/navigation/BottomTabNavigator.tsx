@@ -57,8 +57,11 @@ const BottomTabNavigator = () => {
             </Animated.View>
           );
         },
-        tabBarActiveTintColor: "tomato",
-        tabBarInactiveTintColor: "gray",
+        tabBarActiveTintColor: "white",
+        tabBarInactiveTintColor: "#d3d3d3",
+        tabBarStyle: {
+          backgroundColor: "#1c1c1c",
+        },
       })}
     >
       <Tab.Screen
@@ -66,9 +69,21 @@ const BottomTabNavigator = () => {
         component={HomeStackNavigator}
         options={{ headerShown: false, tabBarLabel: "Home" }}
       />
-      <Tab.Screen name="Search" component={SearchScreen} />
-      <Tab.Screen name="Favorites" component={FavoritesScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Favorites"
+        component={FavoritesScreen}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{ headerShown: false }}
+      />
     </Tab.Navigator>
   );
 };

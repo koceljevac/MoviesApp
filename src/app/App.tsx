@@ -1,7 +1,13 @@
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import RootNavigator from "./navigation/RootNavigator";
-import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  StyleSheet,
+  StatusBar,
+} from "react-native";
 import {
   useFonts,
   Montserrat_400Regular,

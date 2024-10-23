@@ -11,7 +11,7 @@ const ActorCircleFeed = ({ actorName, actorImage }: ActorCircleFeedProps) => {
   return (
     <View style={styles.container}>
       <Image source={{ uri: actorImage }} style={styles.circleImage}></Image>
-      <Text style={TextStyles.small}>{actorName}</Text>
+      <Text style={[TextStyles.small, { color: "white" }]}>{actorName}</Text>
     </View>
   );
 };

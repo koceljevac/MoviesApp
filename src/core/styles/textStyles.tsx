@@ -7,7 +7,7 @@ const TextStyles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     fontFamily: "Montserrat_700Bold",
-    color: "#333",
+    color: "white",
     marginBottom: 10,
   },
 
@@ -16,7 +16,7 @@ const TextStyles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     fontFamily: "Montserrat_700Bold",
-    color: "#333",
+    color: "white",
     marginBottom: 8,
   },
 
@@ -24,7 +24,7 @@ const TextStyles = StyleSheet.create({
   p: {
     fontSize: 16,
     fontFamily: "Montserrat_400Regular",
-    color: "#666",
+    color: "white",
     lineHeight: 22,
   },
 
@@ -33,7 +33,7 @@ const TextStyles = StyleSheet.create({
     fontSize: 16,
     fontStyle: "italic",
     fontFamily: "Montserrat_400Regular",
-    color: "#666",
+    color: "white",
   },
 
   //bold
@@ -41,21 +41,21 @@ const TextStyles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     fontFamily: "Montserrat_700Bold",
-    color: "#333",
+    color: "white",
   },
 
   //small
   small: {
     fontSize: 12,
     fontFamily: "Montserrat_400Regular",
-    color: "#999",
+    color: "white",
   },
 
   //subtitle
   subtitle: {
     fontSize: 18,
     fontFamily: "Montserrat_400Regular",
-    color: "#555",
+    color: "white",
     marginBottom: 5,
   },
 });

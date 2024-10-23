@@ -13,7 +13,7 @@ const HomeStackNavigator = () => {
   return (
     <Stack.Navigator initialRouteName="HomeScreen">
       <Stack.Screen
-        name="HomeScreen" // Promenio ime u HomeScreen umesto samo Home
+        name="HomeScreen"
         component={HomeScreen}
         options={{ headerShown: false }}
       />

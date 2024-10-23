@@ -5,10 +5,11 @@ import { createStackNavigator } from "@react-navigation/stack";
 import BottomTabNavigator from "./BottomTabNavigator";
 import MovieDetailsScreen from "../screens/search_screen/MovieDetailsScreen"; // Uvezi MovieDetailsScreen
 import { Movie } from "../../features/movies/types/Movie";
+import { Series } from "../../features/movies/types/Series";
 
 export type RootStackParamList = {
   Main: undefined;
-  MovieDetails: Movie;
+  MovieDetails: Movie | Series;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();

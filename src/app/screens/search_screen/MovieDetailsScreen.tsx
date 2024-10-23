@@ -4,7 +4,6 @@ import React from "react";
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native"; // Dodaj Image komponentu
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../navigation/StackNavigator"; // Importuje tipove za rute
-import { SafeAreaView } from "react-native-safe-area-context";
 
 // Definišeš tip za rutu
 type MovieDetailsScreenRouteProp = RouteProp<

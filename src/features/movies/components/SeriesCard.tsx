@@ -5,23 +5,23 @@ import { View, Image, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../../app/navigation/StackNavigator";
-import { Movie } from "../../../features/movies/types/Movie";
+import { Series } from "../types/Series";
 
 type MovieDetailsNavigationProp = StackNavigationProp<
   RootStackParamList,
   "MovieDetails"
 >;
 
-const MovieCard = ({ movie }: { movie: Movie }) => {
+const SeriesCard = ({ series }: { series: Series }) => {
   const navigation = useNavigation<MovieDetailsNavigationProp>();
 
   const handlePress = () => {
-    navigation.navigate("MovieDetails", movie);
+    navigation.navigate("MovieDetails", series);
   };
   return (
     <Pressable onPress={handlePress} style={styles.cardContainer}>
       <View></View>
-      <Image source={{ uri: movie.poster_path }} style={styles.image} />
+      <Image source={{ uri: series.poster_path }} style={styles.image} />
     </Pressable>
   );
 };
@@ -46,4 +46,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MovieCard;
+export default SeriesCard;

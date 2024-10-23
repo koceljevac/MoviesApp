@@ -1,61 +1,80 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, SafeAreaView } from "react-native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../../navigation/StackNavigator";
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  ActivityIndicator,
+  FlatList,
+} from "react-native";
 import { useTopRatedMovies } from "../../../features/movies/hooks/useTopRatedMovies";
-import MoviesSection from "../search_screen/section/PopularMoviesSection";
+import MoviesSection from "../search_screen/section/MoviesSection";
 import { usePopularActors } from "../../../features/actors/hooks/usePopularActors";
 import ActorCircleFeed from "../../../features/actors/components/ActorCircleFeed";
-
-type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, "Main">;
+import TextStyles from "../../../core/styles/textStyles";
 
 export const HomeScreen = () => {
   const {
-    movies,
-    loading: moviesLoading,
+    data: movies,
+    isLoading: moviesLoading,
     error: moviesError,
+    fetchNextPage: fetchNextMoviesPage,
+    hasNextPage: hasNextMoviesPage,
   } = useTopRatedMovies();
+
   const {
-    actors,
-    loading: actorsLoading,
+    data: actors,
+    isLoading: actorsLoading,
     error: actorsError,
+    fetchNextPage: fetchNextActorsPage,
+    hasNextPage: hasNextActorsPage,
   } = usePopularActors();
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <ScrollView>
-          <Text style={styles.sectionTitle}>Top Actors</Text>
-
-          {actorsLoading ? (
-            <Text>Loading actors...</Text>
-          ) : actorsError ? (
-            <Text>Error loading actors: {actorsError}</Text>
-          ) : (
-            <ScrollView
-              horizontal={true} // Omogućava horizontalno skrolovanje
-              showsHorizontalScrollIndicator={false} // Skrivanje indikatora skrolovanja
-              style={styles.horizontalScrollContainer}
-            >
-              <View style={styles.actorsContainer}>
-                {actors.map((actor) => (
-                  <ActorCircleFeed
-                    key={actor.id}
-                    actorName={actor.name}
-                    actorImage={`https://image.tmdb.org/t/p/w500${actor.profile_path}`}
-                  />
-                ))}
-              </View>
-            </ScrollView>
-          )}
-
-          <MoviesSection
-            movies={movies}
-            loading={moviesLoading}
-            error={moviesError}
-            title="Top Rated Movies"
+        <Text style={[TextStyles.h2, { color: "white" }]}>Top Actors</Text>
+        {actorsLoading && !actors ? (
+          <ActivityIndicator size="large" color="#fff" />
+        ) : actorsError ? (
+          <Text style={styles.errorText}>
+            Error loading actors: {actorsError}
+          </Text>
+        ) : (
+          <FlatList
+            data={actors}
+            horizontal
+            keyExtractor={(actor, index) =>
+              actor.id ? actor.id.toString() : index.toString()
+            }
+            renderItem={({ item }) => (
+              <ActorCircleFeed
+                actorName={item.name}
+                actorImage={`https://image.tmdb.org/t/p/w500${item.profile_path}`}
+              />
+            )}
+            showsHorizontalScrollIndicator={false}
+            onEndReached={() => {
+              if (hasNextActorsPage) {
+                fetchNextActorsPage();
+              }
+            }}
+            onEndReachedThreshold={0.5}
+            ListFooterComponent={
+              hasNextActorsPage ? <ActivityIndicator size="small" /> : null
+            }
+            contentContainerStyle={styles.actorsContainer}
           />
-        </ScrollView>
+        )}
+
+        <MoviesSection
+          movies={movies}
+          loading={moviesLoading}
+          error={moviesError}
+          title="Top Rated Movies"
+          fetchNextPage={fetchNextMoviesPage} // Pass the function to fetch the next page
+          hasNextPage={hasNextMoviesPage} // Pass whether more pages exist
+        />
       </View>
     </SafeAreaView>
   );
@@ -64,29 +83,20 @@ export const HomeScreen = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "white", // Možeš promeniti boju pozadine
+    backgroundColor: "black",
   },
   container: {
-    flex: 1,
     padding: 10,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
+  errorText: {
+    color: "red",
+    fontSize: 16,
     textAlign: "center",
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
     marginVertical: 10,
   },
-  horizontalScrollContainer: {
-    marginBottom: 20, // Margina ispod horizontalne sekcije
-  },
   actorsContainer: {
-    flexDirection: "row",
-    flexWrap: "nowrap", // Sprečava prelazak u sledeći red
+    paddingBottom: 20,
+    paddingHorizontal: 10,
   },
 });
 

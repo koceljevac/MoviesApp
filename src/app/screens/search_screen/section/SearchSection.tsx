@@ -1,8 +1,8 @@
 // src/screens/search_screen/components/SearchSection.tsx
 
-import React from 'react';
-import { SearchBar } from 'react-native-elements';
-import { StyleSheet } from 'react-native';
+import React from "react";
+import { SearchBar } from "react-native-elements";
+import { StyleSheet } from "react-native";
 
 type SearchSectionProps = {
   searchText: string;
@@ -12,9 +12,9 @@ type SearchSectionProps = {
 const SearchSection = ({ searchText, setSearchText }: SearchSectionProps) => {
   return (
     <SearchBar
-      placeholder="Search movies..."
+      placeholder="Search..."
       value={searchText}
-      onChangeText={setSearchText}  // Updates the search text
+      onChangeText={setSearchText}
       platform="default"
       containerStyle={styles.searchBarContainer}
       inputContainerStyle={styles.inputContainer}
@@ -24,13 +24,13 @@ const SearchSection = ({ searchText, setSearchText }: SearchSectionProps) => {
 
 const styles = StyleSheet.create({
   searchBarContainer: {
-    backgroundColor: 'white',
-    borderBottomColor: 'transparent',
-    borderTopColor: 'transparent',
+    backgroundColor: "black",
+    borderBottomColor: "transparent",
+    borderTopColor: "transparent",
     marginBottom: 10,
   },
   inputContainer: {
-    backgroundColor: '#e0e0e0',
+    backgroundColor: "#242424",
     borderRadius: 8,
   },
 });

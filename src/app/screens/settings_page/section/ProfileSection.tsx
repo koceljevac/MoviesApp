@@ -49,8 +49,7 @@ const ProfileSection = ({
         <Text style={TextStyles.p}>{name}</Text>
       </View>
       <TouchableOpacity
-        // onPress={onNotificationPress}
-        onPress={() => console.log(process.env.EXPO_PUBLIC_API_URL)}
+        onPress={onNotificationPress}
         style={styles.notificationButton}
       >
         <View style={styles.iconCircle}>
