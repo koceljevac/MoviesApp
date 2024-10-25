@@ -61,4 +61,16 @@ export const ApiService = {
 
     return await response.json();
   },
+
+  getSimilarMovies: async (movieId: number, page: number = 1) => {
+    const endpoint = `/movie/${movieId}/similar?language=en-US&page=${page}&api_key=${API_KEY}`;
+    const fullUrl = `${BASE_URL}${endpoint}`;
+    const response = await fetch(fullUrl);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    return await response.json();
+  },
 };

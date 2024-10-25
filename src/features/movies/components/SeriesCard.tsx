@@ -5,7 +5,7 @@ import { View, Image, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../../app/navigation/StackNavigator";
-import { Series } from "../types/Series";
+import { Series } from "../../series/models/Series";
 
 type MovieDetailsNavigationProp = StackNavigationProp<
   RootStackParamList,

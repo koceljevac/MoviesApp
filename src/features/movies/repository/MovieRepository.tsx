@@ -1,6 +1,6 @@
 import { ApiService } from "../../../core/api/ApiSevices";
 import { Movie } from "../../movies/types/Movie";
-import { Series } from "../../movies/types/Series";
+import { mapGenreIdsToNamesFromList } from "../../utils/GetGenresByIds";
 
 export const MovieRepository = {
   getPopularMovies: async (
@@ -34,6 +34,8 @@ export const MovieRepository = {
         poster_path: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
         vote_average: movie.vote_average,
         overview: movie.overview,
+        vote_count: movie.vote_count,
+        genre_ids: mapGenreIdsToNamesFromList(movie.genre_ids),
       })),
       nextPage: data.page < data.total_pages ? data.page + 1 : undefined,
     };
@@ -52,24 +54,28 @@ export const MovieRepository = {
         poster_path: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
         vote_average: movie.vote_average,
         overview: movie.overview,
+        vote_count: movie.vote_count,
+        genre_ids: mapGenreIdsToNamesFromList(movie.genre_ids),
       })),
       nextPage: data.page < data.total_pages ? data.page + 1 : undefined,
     };
   },
 
-  getTopPopularTVSeries: async (
-    page: number
-  ): Promise<{ results: Series[]; nextPage: number | undefined }> => {
-    const data = await ApiService.getPopularTVseries(page);
-
+  getSimilarMovies: async (
+    page: number,
+    moviesId: number
+  ): Promise<{ results: Movie[]; nextPage: number | undefined }> => {
+    const data = await ApiService.getSimilarMovies(moviesId, page);
     return {
-      results: data.results.map((series: Series) => ({
-        id: series.id,
-        name: series.name,
-        release_date: series.release_date,
-        poster_path: `https://image.tmdb.org/t/p/w500${series.poster_path}`,
-        vote_average: series.vote_average,
-        overview: series.overview,
+      results: data.results.map((movie: Movie) => ({
+        id: movie.id,
+        title: movie.title,
+        release_date: movie.release_date,
+        poster_path: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+        vote_average: movie.vote_average,
+        overview: movie.overview,
+        vote_count: movie.vote_count,
+        genre_names: movie.genre_ids, // These are already genre names
       })),
       nextPage: data.page < data.total_pages ? data.page + 1 : undefined,
     };

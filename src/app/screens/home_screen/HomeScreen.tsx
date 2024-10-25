@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -6,14 +6,20 @@ import {
   SafeAreaView,
   ActivityIndicator,
   FlatList,
+  TouchableOpacity,
 } from "react-native";
 import { useTopRatedMovies } from "../../../features/movies/hooks/useTopRatedMovies";
 import MoviesSection from "../search_screen/section/MoviesSection";
 import { usePopularActors } from "../../../features/actors/hooks/usePopularActors";
 import ActorCircleFeed from "../../../features/actors/components/ActorCircleFeed";
 import TextStyles from "../../../core/styles/textStyles";
+import { useNavigation } from "@react-navigation/native";
+import * as Animatable from "react-native-animatable";
+import ShimmerPlaceholder from "react-native-shimmer-placeholder";
 
 export const HomeScreen = () => {
+  const navigation = useNavigation();
+
   const {
     data: movies,
     isLoading: moviesLoading,
@@ -30,12 +36,31 @@ export const HomeScreen = () => {
     hasNextPage: hasNextActorsPage,
   } = usePopularActors();
 
+  useEffect(() => {
+    if (movies) {
+      // Your logic with movies data
+    }
+  }, [movies]);
+
+  const handleActorPress = (actor) => {
+    navigation.navigate("ActorDetails", { actor });
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <Text style={[TextStyles.h2, { color: "white" }]}>Top Actors</Text>
         {actorsLoading && !actors ? (
-          <ActivityIndicator size="large" color="#fff" />
+          <FlatList
+            data={[...Array(5)]}
+            horizontal
+            keyExtractor={(_, index) => index.toString()}
+            renderItem={() => (
+              <ShimmerPlaceholder style={styles.shimmerPlaceholder} />
+            )}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.actorsContainer}
+          />
         ) : actorsError ? (
           <Text style={styles.errorText}>
             Error loading actors: {actorsError}
@@ -48,10 +73,18 @@ export const HomeScreen = () => {
               actor.id ? actor.id.toString() : index.toString()
             }
             renderItem={({ item }) => (
-              <ActorCircleFeed
-                actorName={item.name}
-                actorImage={`https://image.tmdb.org/t/p/w500${item.profile_path}`}
-              />
+              <TouchableOpacity onPress={() => handleActorPress(item)}>
+                <Animatable.View
+                  animation="zoomIn"
+                  duration={500}
+                  easing="ease-in-out"
+                >
+                  <ActorCircleFeed
+                    actorName={item.name}
+                    actorImage={`https://image.tmdb.org/t/p/w500${item.profile_path}`}
+                  />
+                </Animatable.View>
+              </TouchableOpacity>
             )}
             showsHorizontalScrollIndicator={false}
             onEndReached={() => {
@@ -67,14 +100,22 @@ export const HomeScreen = () => {
           />
         )}
 
-        <MoviesSection
-          movies={movies}
-          loading={moviesLoading}
-          error={moviesError}
-          title="Top Rated Movies"
-          fetchNextPage={fetchNextMoviesPage} // Pass the function to fetch the next page
-          hasNextPage={hasNextMoviesPage} // Pass whether more pages exist
-        />
+        {moviesLoading && !movies.length ? (
+          <View style={styles.moviesShimmerContainer}>
+            {[...Array(3)].map((_, index) => (
+              <ShimmerPlaceholder key={index} style={styles.shimmerMovie} />
+            ))}
+          </View>
+        ) : (
+          <MoviesSection
+            movies={movies}
+            loading={moviesLoading}
+            error={moviesError}
+            title="Top Rated Movies"
+            fetchNextPage={fetchNextMoviesPage}
+            hasNextPage={hasNextMoviesPage}
+          />
+        )}
       </View>
     </SafeAreaView>
   );
@@ -83,7 +124,7 @@ export const HomeScreen = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "black",
+    backgroundColor: "#121212",
   },
   container: {
     padding: 10,
@@ -97,6 +138,23 @@ const styles = StyleSheet.create({
   actorsContainer: {
     paddingBottom: 20,
     paddingHorizontal: 10,
+  },
+  shimmerPlaceholder: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginRight: 10,
+  },
+  moviesShimmerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginTop: 20,
+  },
+  shimmerMovie: {
+    width: 150,
+    height: 250,
+    borderRadius: 10,
+    marginHorizontal: 10,
   },
 });
 

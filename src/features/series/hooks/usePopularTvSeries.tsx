@@ -1,15 +1,15 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { MovieRepository } from "../repository/MovieRepository";
-import { Series } from "../types/Series";
+import { SeriesRepository } from "../../series/repository/SeriesRepository";
+import { Series } from "../models/Series";
 
 export const usePopularTVSeries = () => {
   const { data, isLoading, isError, error, fetchNextPage, hasNextPage } =
     useInfiniteQuery({
       queryKey: ["popularTvSeries"],
       queryFn: ({ pageParam = 1 }) =>
-        MovieRepository.getTopPopularTVSeries(pageParam),
+        SeriesRepository.getTopPopularTVSeries(pageParam),
       getNextPageParam: (lastPage) => lastPage.nextPage || undefined,
-      staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+      staleTime: 5 * 60 * 1000,
       retry: 1,
       refetchOnWindowFocus: false,
       initialPageParam: 1,

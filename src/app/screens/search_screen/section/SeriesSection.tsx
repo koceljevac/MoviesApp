@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import TextStyles from "../../../../core/styles/textStyles";
-import { Series } from "../../../../features/movies/types/Series";
+import { Series } from "../../../../features/series/models/Series";
 import SeriesCard from "../../../../features/movies/components/SeriesCard";
 
 type SeriesSectionProps = {

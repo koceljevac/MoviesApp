@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, SafeAreaView } from "react-native";
 import { usePopularMovies } from "../../../features/movies/hooks/usePopularMovies";
-import { usePopularTVSeries } from "../../../features/movies/hooks/usePopularTvSeries";
+import { usePopularTVSeries } from "../../../features/series/hooks/usePopularTvSeries";
 import SearchSection from "./section/SearchSection";
 import MoviesSection from "./section/MoviesSection";
 import SeriesSection from "./section/SeriesSection";

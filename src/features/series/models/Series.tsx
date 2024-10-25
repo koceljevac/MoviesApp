@@ -5,4 +5,6 @@ export type Series = {
   poster_path: string;
   vote_average: number;
   overview: string;
+  vote_count: number;
+  genre_ids: [];
 };

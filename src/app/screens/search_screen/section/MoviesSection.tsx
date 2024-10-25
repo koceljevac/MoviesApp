@@ -10,6 +10,7 @@ import {
 import MovieCard from "../../../../features/movies/components/MovieCard";
 import { Movie } from "../../../../features/movies/types/Movie";
 import TextStyles from "../../../../core/styles/textStyles";
+import * as Animatable from "react-native-animatable";
 
 type MoviesSectionProps = {
   movies: Movie[];
@@ -58,9 +59,11 @@ const MoviesSection = ({
     <View>
       <View style={styles.header}>
         <Text style={[TextStyles.subtitle, styles.titleText]}>{title}</Text>
-        <TouchableOpacity onPress={onSeeAllPress}>
-          <Text style={[TextStyles.small, styles.seeAllText]}>See All</Text>
-        </TouchableOpacity>
+        {onSeeAllPress && (
+          <TouchableOpacity onPress={onSeeAllPress}>
+            <Text style={[TextStyles.small, styles.seeAllText]}>See All</Text>
+          </TouchableOpacity>
+        )}
       </View>
       <FlatList
         data={movies}
@@ -68,7 +71,16 @@ const MoviesSection = ({
         initialNumToRender={5}
         windowSize={10}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <MovieCard movie={item} />}
+        renderItem={({ item, index }) => (
+          <Animatable.View
+            animation="zoomIn"
+            duration={500}
+            delay={index + 100}
+            easing="ease-in-out"
+          >
+            <MovieCard movie={item} />
+          </Animatable.View>
+        )}
         contentContainerStyle={styles.flatListContent}
         showsHorizontalScrollIndicator={false}
         onEndReached={() => {
